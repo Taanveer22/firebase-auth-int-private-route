@@ -14,7 +14,7 @@ const Register = () => {
 
     console.log(name, email, password);
 
-    // createUser function call()
+    // createUser function call() by context api
     createUser(email, password)
       .then((result) => {
         console.log(result);

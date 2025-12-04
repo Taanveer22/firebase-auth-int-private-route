@@ -1,10 +1,15 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import auth from "../firebase/firebase.config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
+  
+  const [user, setUser] = useState(null);
   // =======object literal syntax shorthand examples========
   const topic = "context api";
   const isHard = true;
@@ -12,11 +17,28 @@ const AuthProvider = ({ children }) => {
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
+
+  const signInUser = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser) {
+      console.log("currently logged user", currentUser);
+      setUser(currentUser);
+    } else {
+      console.log("no logged user");
+      setUser(null);
+    }
+  });
+
   // const info = {
   //   topic: topic,
   //   isHard: isHard,
   //   version: version,
   //   createUser : createUser,
+  //   signInUser : signInUser,
+  //   user : user,
   // };
 
   const info = {
@@ -24,6 +46,8 @@ const AuthProvider = ({ children }) => {
     isHard,
     version,
     createUser,
+    signInUser,
+    user,
   };
   console.log(info);
 
