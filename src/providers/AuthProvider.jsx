@@ -1,38 +1,58 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-export const AuthContext = createContext(null);
 
+// ===========    context create    ===============
+const AuthContext = createContext(null);
+
+// ======= provider component =================
 const AuthProvider = ({ children }) => {
-  
   const [user, setUser] = useState(null);
-  // =======object literal syntax shorthand examples========
+  // object literal syntax shorthand examples
   const topic = "context api";
   const isHard = true;
   const version = 19;
+
+  // ========= create user ==============
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  // ========= sign in user ==============
   const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser) {
-      console.log("currently logged user", currentUser);
-      setUser(currentUser);
-    } else {
-      console.log("no logged user");
-      setUser(null);
-    }
-  });
+  // ========== listen to auth changes (method 01) =================
 
-  // const info = {
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   if (currentUser) {
+  //     console.log("currently logged user", currentUser);
+  //     setUser(currentUser);
+  //   } else {
+  //     console.log("no logged user");
+  //     setUser(null);
+  //   }
+  // });
+
+  // ========== listen to auth changes (method 02) =================
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("current user", currentUser);
+      setUser(currentUser);
+    });
+
+    return () => {
+      unSubscribe();
+    };
+  }, []);
+
+  // ========== memorized context value (method 01) ===================
+  // const authInfo = {
   //   topic: topic,
   //   isHard: isHard,
   //   version: version,
@@ -41,7 +61,8 @@ const AuthProvider = ({ children }) => {
   //   user : user,
   // };
 
-  const info = {
+  // ========== memorized context value (method 02) ===================
+  const authInfo = {
     topic,
     isHard,
     version,
@@ -49,9 +70,12 @@ const AuthProvider = ({ children }) => {
     signInUser,
     user,
   };
-  console.log(info);
+  console.log(authInfo);
 
-  return <AuthContext.Provider value={info}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
+export { AuthContext };
 export default AuthProvider;

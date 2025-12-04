@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Header = () => {
-  const info = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const links = (
     <>
       <li>
@@ -51,7 +51,7 @@ const Header = () => {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">{info.topic}</a>
+          <a className="btn">{user?.email}</a>
         </div>
       </div>
     </div>
