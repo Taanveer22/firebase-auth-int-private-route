@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 // ===========    context create    ===============
@@ -25,6 +26,11 @@ const AuthProvider = ({ children }) => {
   // ========= sign in user ==============
   const signInUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  // =============== sign out user ==================
+  const signOutUser = () => {
+    return signOut(auth);
   };
 
   // ========== listen to auth changes (method 01) =================
@@ -58,6 +64,7 @@ const AuthProvider = ({ children }) => {
   //   version: version,
   //   createUser : createUser,
   //   signInUser : signInUser,
+  //   signOutUser : signOutUser,
   //   user : user,
   // };
 
@@ -68,6 +75,7 @@ const AuthProvider = ({ children }) => {
     version,
     createUser,
     signInUser,
+    signOutUser,
     user,
   };
   console.log(authInfo);
