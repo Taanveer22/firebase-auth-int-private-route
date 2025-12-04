@@ -17,9 +17,14 @@ const Header = () => {
         <NavLink to="/register">Register</NavLink>
       </li>
       {user && (
-        <li>
-          <NavLink to="/orders">Orders</NavLink>
-        </li>
+        <>
+          <li>
+            <NavLink to="/orders">Orders</NavLink>
+          </li>
+          <li>
+            <NavLink to="/profile">Profile</NavLink>
+          </li>
+        </>
       )}
     </>
   );
