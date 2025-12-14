@@ -13,19 +13,19 @@ const CommonRouter = createBrowserRouter([
     element: <Layout></Layout>,
     children: [
       {
-        path: "",
+        index: true,
         element: <Home></Home>,
       },
       {
-        path: "/login",
+        path: "login",
         element: <Login></Login>,
       },
       {
-        path: "/register",
+        path: "register",
         element: <Register></Register>,
       },
       {
-        path: "/orders",
+        path: "orders",
         element: (
           <PrivateRouter>
             <Orders></Orders>
@@ -33,7 +33,7 @@ const CommonRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/profile",
+        path: "profile",
         element: (
           <PrivateRouter>
             <Profile></Profile>
