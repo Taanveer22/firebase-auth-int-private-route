@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.config";
 import {
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -12,8 +13,9 @@ import {
 // ===========    context create    ===============
 const AuthContext = createContext(null);
 
-// =========== google auth provider ==============
+// =========== auth provider ==============
 const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 // ======= provider component =================
 const AuthProvider = ({ children }) => {
@@ -44,7 +46,14 @@ const AuthProvider = ({ children }) => {
 
   // =========== sign in with google ================
   const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider);
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  // ========= sign in with github ==========
+  const signInWithGithub = () => {
+    setLoading(true);
+    return signInWithPopup(auth, githubProvider);
   };
 
   // ========== listen to auth changes (method 01) =================
@@ -83,6 +92,7 @@ const AuthProvider = ({ children }) => {
   //   signInWithGoogle : signInWithGoogle,
   //   user: user,
   //   loading: loading,
+  //   signInWithGithub : signInWithGithub,
   // };
 
   // ========== memorized context value (method 02) ===================
@@ -96,6 +106,7 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     user,
     loading,
+    signInWithGithub,
   };
   console.log(authInfo);
 

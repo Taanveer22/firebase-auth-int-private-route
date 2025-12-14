@@ -74,7 +74,7 @@ const Header = () => {
         <div className="navbar-end">
           {user ? (
             <>
-              <span>{user.email}</span>
+              <span>{user?.displayName}</span>
               <a onClick={handleSignOut} className="btn">
                 Signout
               </a>
